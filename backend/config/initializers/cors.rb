@@ -7,7 +7,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins "localhost:3000" # React側のポート番号3000を指定
+    origins 'localhost:3000' # React側のポート番号3000を指定
 
     resource '*',
       headers: :any,

@@ -20,11 +20,11 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    command: /bin/sh -c "rm -f /myapp/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    image: rails:dev
+    command: /bin/sh -c "rm -f /todo-app/tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    # image: rails:dev
     volumes:
       - ./backend:/todo-app
-      - ./backend/vendor/bundle:/todo-app/vendor/bundle
+      - gem_data:/usr/local/bundle
     environment:
       TZ: Asia/Tokyo
       RAILS_ENV: development
@@ -47,3 +47,4 @@ services:
 # データ永続化用
 volumes:
   mysql-data:
+  gem_data:
