@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe "ユーザー登録処理確認　（model /api/v1/auth）" do
 
     it "email、passwordが存在する場合、登録される" do
       user = FactoryBot.build(:user)
@@ -40,5 +41,5 @@ RSpec.describe User, type: :model do
     it "passwordが6文字以上であれば登録される" do
       expect(FactoryBot.build(:user, password: "123456", password_confirmation: "123456")).to be_valid
     end
-
+  end
 end
