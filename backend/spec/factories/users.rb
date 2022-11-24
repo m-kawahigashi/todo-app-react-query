@@ -12,4 +12,10 @@ FactoryBot.define do
     password_confirmation { "testuser" }
   end
 
+  factory :login_user, class: User do
+    name { Faker::Name.name }
+    email { "loginuser@example.com" }
+    password { "loginuser" }
+  end
+
 end
