@@ -3,43 +3,69 @@ require 'rails_helper'
 RSpec.describe User, type: :model do
   describe "ユーザー登録処理確認　（model /api/v1/auth）" do
 
-    it "email、passwordが存在する場合、登録される" do
-      user = FactoryBot.build(:user)
-      expect(user).to be_valid
+    context "email、passwordが存在する場合" do
+      let(:user) { build(:user) }
+
+      it "登録される" do
+        expect(user).to be_valid
+      end
     end
 
-    it "emailが存在しない場合は登録できず、エラーとなる" do
-      user = FactoryBot.build(:user, email: nil)
-      user.valid?
-      expect(user.errors[:email]).to include("can't be blank")
+    context "emailが存在しない場合" do
+      let(:user) { build(:user, email: nil) }
+
+      it "登録できず、エラーとなる" do
+        user.valid?
+        expect(user.errors[:email]).to include("can't be blank")
+      end
     end
 
-    it "email内容が重複している場合は登録できず、エラーとなる" do
-      user1 = FactoryBot.create(:user, email: "test1@example.com", password: "password1")
-      expect(FactoryBot.build(:user, email: user1.email, password: "password2")).to_not be_valid
+    context "email内容が重複している場合" do
+      let(:user1) { create(:user) }
+      let(:user2) { build(:user, email: user1.email) }
+
+      it "登録できず、エラーとなる" do
+        user2.valid?
+        expect(user2.errors.messages[:email]).to include("has already been taken")
+      end
     end
 
-    it "passwordが存在しない場合は登録できず、エラーとなる" do
-      user = FactoryBot.build(:user, password: nil)
-      user.valid?
-      expect(user.errors[:password]).to include("can't be blank")
+    context "passwordが存在しない場合" do
+      let(:user) { build(:user, password: nil) }
+
+      it "登録できず、エラーとなる" do
+        user.valid?
+        expect(user.errors[:password]).to include("can't be blank")
+      end
     end
 
-    it "password内容が重複している場合は登録できず、エラーとなる" do
-      user1 = FactoryBot.create(:user, email: "test1@example.com", password: "password1")
-      expect(FactoryBot.build(:user, email: "test2@example.com", password: user1.password)).to_not be_valid
+    # context "password内容が重複している場合" do
+    #   let(:user1) { create(:user) }
+    #   let(:user2) { build(:user, email: "testuser@example.com", password: user1.password) }
+
+    #   it "登録できず、エラーとなる" do
+    #     user2.valid?
+    #     expect(user2.errors.messages[:password]).to include "has already been taken"
+    #   end
+    # end
+
+    context "password_confirmationとpasswordが異なる場合" do
+      it "登録できず、エラーとなる" do
+        expect(build(:user, password:"password1", password_confirmation: "password2")).to_not be_valid
+      end
     end
 
-    it "password_confirmationとpasswordが異なる場合保存できない" do
-      expect(FactoryBot.build(:user, password:"password1", password_confirmation: "password2")).to_not be_valid
+    context "passwordが6文字未満の場合" do
+      it "登録できず、エラーとなる" do
+        expect(build(:user, password: "1" * 5, password_confirmation: "1" * 5)).to_not be_valid
+      end
     end
 
-    it "passwordが6文字未満であれば登録できない" do
-      expect(FactoryBot.build(:user, password: "12345", password_confirmation: "12345")).to_not be_valid
+    context "passwordが6文字以上の場合" do
+      it "登録される" do
+        expect(build(:user, password: "1" * 6, password_confirmation: "1" * 6)).to be_valid
+      end
     end
 
-    it "passwordが6文字以上であれば登録される" do
-      expect(FactoryBot.build(:user, password: "123456", password_confirmation: "123456")).to be_valid
-    end
   end
 end
