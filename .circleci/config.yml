@@ -1,15 +1,16 @@
 jobs:
   test_backend:
     docker:
-      - image: circleci/ruby:2.6.6-stretch-node
+      - image: circleci/ruby:2.5.3
         environment:
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
+          DB_USERNAME: 'root'
+          DB_PASSWORD: ''
       - image: circleci/mysql:5.7
         command: |
           mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
         environment:
-          MYSQL_USER: 'root'
           MYSQL_DATABASE: 'db'
           MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
           MYSQL_ROOT_PASSWORD: ''
@@ -53,14 +54,6 @@ jobs:
             bundle exec rspec $(circleci tests glob "spec/**/*_spec.rb" | circleci tests split --split-by=timings) \
               || (printf "====== RETRYING...\n\n\n"; bundle exec rspec --only-failures)
           working_directory: ~/todo-app/backend
-
-      - store_test_results:
-          path: /tmp/test-results
-      - store_artifacts:
-          path: /tmp/test-results
-          destination: test-results
-      - store_artifacts:
-          path: /home/circleci/todo-app/tmp/screenshots
 
 workflows:
   version: 2
