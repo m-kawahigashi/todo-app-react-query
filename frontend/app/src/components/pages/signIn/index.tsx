@@ -1,4 +1,4 @@
-import { FC,  memo, FormEvent, useState } from "react"
+import { FC, memo, useState } from "react"
 import { Link } from "react-router-dom"
 
 import { Typography } from "@material-ui/core"
@@ -17,19 +17,13 @@ import AlertMessage from "components/utils/AlertMessage"
 const SignIn: FC = memo(() => {
 
   const classes = useStyles()
-  const { handleSubmit , alertMessageOpen, setAlertMessageOpen} = useSignIn();
+  const { handleSubmit, alertMessageOpen, setAlertMessageOpen} = useSignIn();
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
-  const onSubmitLogin = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    handleSubmit({email, password});
-  }
-
   return (
     <>
-      <form noValidate autoComplete="off" onSubmit={onSubmitLogin}>
+      <form noValidate autoComplete="off" onSubmit={handleSubmit}>
         <Card className={classes.card}>
           <CardHeader className={classes.header} title="ログイン" />
           <CardContent>
@@ -38,6 +32,7 @@ const SignIn: FC = memo(() => {
               required
               fullWidth
               label="メールアドレス"
+              name="email"
               value={email}
               margin="dense"
               onChange={event => setEmail(event.target.value)}
@@ -47,6 +42,7 @@ const SignIn: FC = memo(() => {
               required
               fullWidth
               label="パスワード"
+              name="password"
               type="password"
               placeholder="6文字以上"
               value={password}

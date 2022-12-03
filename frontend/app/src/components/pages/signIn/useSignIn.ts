@@ -1,4 +1,4 @@
-import {  useState, useContext, useCallback } from "react"
+import { FormEvent, useState, useContext, useCallback } from "react"
 import { useHistory } from "react-router-dom"
 import Cookies from "js-cookie"
 
@@ -16,8 +16,16 @@ export const useSignIn = () => {
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
   const [alertMessageOpen, setAlertMessageOpen] = useState<boolean>(false)
 
-  const handleSubmit = useCallback(async (signInFormValue: SignInFormType) => {
-    const { email, password } = signInFormValue;
+  const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formElement = event.target as typeof event.target & {
+      email: {value: string};
+      password: {value: string};
+    }
+
+    const email: SignInFormType["email"] = formElement.email.value;
+    const password: SignInFormType["password"] = formElement.password.value;
 
     const params: SignInParams = {
       email: email,
