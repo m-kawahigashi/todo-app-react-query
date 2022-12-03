@@ -6,7 +6,7 @@ import { AuthContext } from "App"
 import { signIn } from "lib/api/auth"
 import { SignInParams } from "interfaces/index"
 
-type Props = {
+type SignInFormType = {
   email: string;
   password: string;
 }
@@ -16,8 +16,8 @@ export const useSignIn = () => {
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
   const [alertMessageOpen, setAlertMessageOpen] = useState<boolean>(false)
 
-  const handleSubmit = useCallback(async (props: Props) => {
-    const { email, password } = props;
+  const handleSubmit = useCallback(async (signInFormValue: SignInFormType) => {
+    const { email, password } = signInFormValue;
 
     const params: SignInParams = {
       email: email,
@@ -28,7 +28,6 @@ export const useSignIn = () => {
       const res = await signIn(params)
       console.log(res)
 
-      if (res.status === 200) {
         // ログインに成功した場合はCookieに各値を格納
         Cookies.set("_access_token", res.headers["access-token"] || "")
         Cookies.set("_client", res.headers["client"] || "")
@@ -40,9 +39,6 @@ export const useSignIn = () => {
         history.push("/")
 
         console.log("Signed in successfully!")
-      } else {
-        setAlertMessageOpen(true)
-      }
     } catch (err) {
       console.log(err)
       setAlertMessageOpen(true)
