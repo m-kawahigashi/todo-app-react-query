@@ -11,13 +11,14 @@ import Box from "@material-ui/core/Box"
 
 import { useStyles } from "./styles";
 import { useSignIn } from "./useSignIn";
-import AlertMessage from "components/utils/AlertMessage"
+// import AlertMessage from "components/utils/AlertMessage"
+// import AlertMessage from "components/utils/alert/AlertMessage"
 
 // サインイン画面
 const SignIn: FC = memo(() => {
 
   const classes = useStyles()
-  const { handleSubmit, alertMessageOpen, setAlertMessageOpen} = useSignIn();
+  const { handleSubmit, isError } = useSignIn();
   const [email, setEmail] = useState<string>("")
   const [password, setPassword] = useState<string>("")
 
@@ -35,6 +36,7 @@ const SignIn: FC = memo(() => {
               name="email"
               value={email}
               margin="dense"
+              error={isError}
               onChange={event => setEmail(event.target.value)}
             />
             <TextField
@@ -47,6 +49,7 @@ const SignIn: FC = memo(() => {
               placeholder="6文字以上"
               value={password}
               margin="dense"
+              error={isError}
               autoComplete="current-password"
               onChange={event => setPassword(event.target.value)}
             />
@@ -74,12 +77,17 @@ const SignIn: FC = memo(() => {
       </form>
 
       {/* エラーが発生した場合はアラートを表示 */}
-      <AlertMessage
-        open={alertMessageOpen}
-        setOpen={setAlertMessageOpen}
+      {/* <AlertMessage
+        open={isError}
+        setOpen={setIsError}
         severity="error"
         message="メールアドレスかパスワードが間違っています"
-      />
+      /> */}
+      {isError? (
+          <div>メールアドレスかパスワードが間違っています</div>
+      ):(
+        <></>
+      )}
     </>
   )
 })

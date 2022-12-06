@@ -14,7 +14,7 @@ type SignInFormType = {
 export const useSignIn = () => {
   const history = useHistory()
   const { setIsSignedIn, setCurrentUser } = useContext(AuthContext)
-  const [alertMessageOpen, setAlertMessageOpen] = useState<boolean>(false)
+  const [ isError, setIsError ] = useState<boolean>(false)
 
   const handleSubmit = useCallback(async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -49,10 +49,10 @@ export const useSignIn = () => {
         console.log("Signed in successfully!")
     } catch (err) {
       console.log(err)
-      setAlertMessageOpen(true)
+      setIsError(true)
     }
 
   },[ history, setCurrentUser, setIsSignedIn]);
 
-  return { handleSubmit, alertMessageOpen, setAlertMessageOpen}
+  return { handleSubmit, isError }
 }
