@@ -5,7 +5,7 @@ import { AuthContext } from "App"
 const Home: FC = () => {
   const { isSignedIn, currentUser } = useContext(AuthContext)
 
-  if (!isSignedIn && !currentUser) {
+  if (!isSignedIn || !currentUser) {
     return <h1>ログインできてないよー</h1>
   }
 
