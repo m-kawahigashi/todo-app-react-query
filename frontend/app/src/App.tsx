@@ -4,7 +4,8 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import CommonLayout from "components/layouts/CommonLayout"
 import Home from "components/pages/Home"
 import SignUp from "components/pages/SignUp"
-import SignIn from "components/pages/SignIn"
+// import SignIn from "components/pages/SignIn"
+import SignIn from "components/pages/signIn/index"
 
 import { getCurrentUser } from "lib/api/auth"
 import { User } from "interfaces/index"
