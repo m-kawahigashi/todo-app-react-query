@@ -83,11 +83,9 @@ const SignIn: FC = memo(() => {
         severity="error"
         message="メールアドレスかパスワードが間違っています"
       /> */}
-      {isError? (
-          <div>メールアドレスかパスワードが間違っています</div>
-      ):(
-        <></>
-      )}
+      {
+        isError && <div>メールアドレスかパスワードが間違っています</div>
+      }
     </>
   )
 })
