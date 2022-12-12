@@ -3,8 +3,7 @@ class Api::V1::TodosController < ApplicationController
     before_action :set_todo, only: [:edit, :update, :destroy]
 
     def index
-        # render json: { status: 200, todos: Todo.where(user_id: current_api_v1_user.id).order('id DESC')  }
-        render json: { status: 200, todos: Todo.where(user_id: 1).order('id DESC')  }
+        render json: { status: 200, todos: Todo.where(user_id: current_api_v1_user.id) }
     end
 
     def create
@@ -40,8 +39,6 @@ class Api::V1::TodosController < ApplicationController
 
     private
     def todo_params
-        # params.require(:todo).permit(:todo).merge(:user_id: current_api_v1_user.id)
-        # params.permit(:todo).merge(user_id: current_api_v1_user.id)
         params.permit(:todo, :user_id)
     end
 
