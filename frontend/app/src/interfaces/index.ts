@@ -32,3 +32,11 @@ export interface Todo {
   todo: string
   userId: User["id"] | undefined
 }
+
+// todos
+export interface Todos {
+  todos: Todo[]
+  setTodos: Function
+}
+
+

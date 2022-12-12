@@ -1,53 +1,26 @@
-import { FC, useState, useContext } from "react"
-import { AuthContext } from "App"
+import { FC, memo } from "react"
 
-import { createTodo } from "lib/api/todos"
-import { Todo } from "interfaces/index"
+import { Todos } from "interfaces/index"
+import { useCreateTodo } from "../hooks/useCreateTodo"
 
-interface TodoFormProps {
-  todos: Todo[]
-  setTodos: Function
-}
-
-export const TodoForm: FC<TodoFormProps> = ({ todos, setTodos }) => {
-  const { currentUser } = useContext(AuthContext)
-  const [ todo, setTodo ] = useState<string>("")
-
-  const cuurentUserId: number | undefined = currentUser?.id
-
-  const handleCreateTodo = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    const data: Todo = {
-      todo: todo,
-      userId: cuurentUserId
-    }
-
-    try {
-          const res = await createTodo(data)
-          console.log(res)
-
-          setTodos([...todos, res.data.todo])
-
-          // console.log(setTodos)
-          console.log(cuurentUserId)
-    } catch (err) {
-          console.log(err)
-    }
-
-    setTodo("")
-  }
+export const TodoForm: FC<Todos> = memo(({ todos, setTodos }) => {
+  const { handleCreateTodo, onChangeCreateTodo, todo, isError } = useCreateTodo({ todos, setTodos })
 
   return (
-    <form onSubmit={handleCreateTodo}>
-      <input
-        type="text"
-        value={todo}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          setTodo(e.target.value)
-        }}
-      />
-      <input type="submit" value="追加" disabled={!todo} />
-    </form>
+    <>
+      <form onSubmit={handleCreateTodo}>
+        <input
+          type="text"
+          value={todo}
+          name="todo"
+          onChange={onChangeCreateTodo}
+        />
+        <input type="submit" value="追加" disabled={!todo} />
+      </form>
+
+      {
+        isError && <div style={{color: 'red'}}>Todoの取得に失敗しました</div>
+      }
+    </>
   )
-}
+})
