@@ -1,13 +1,8 @@
-import { FC }  from "react"
+import { FC, memo }  from "react"
 import { TodoItem } from "./TodoItem"
-import { Todo } from "interfaces/index"
+import { Todo, Todos } from "interfaces/index"
 
-interface TodoListProps {
-  todos: Todo[]
-  setTodos: Function
-}
-
-export const TodoList: FC<TodoListProps> = ({ todos, setTodos }) => {
+export const TodoList: FC<Todos> = memo(({ todos, setTodos }) => {
   return (
     <table>
       <thead>
@@ -30,4 +25,4 @@ export const TodoList: FC<TodoListProps> = ({ todos, setTodos }) => {
       </tbody>
     </table>
   )
-}
+})
