@@ -1,31 +1,17 @@
-import React, { FC, useContext, useState, useEffect } from "react"
+import { FC, memo, useContext, useEffect } from "react"
 import { TodoList } from "./TodoList"
 import { TodoForm } from "./TodoForm"
 
-import { getTodos } from "lib/api/todos"
-import { Todo } from "interfaces/index"
-
 import { AuthContext } from "App"
+import { useGetTodo } from "../hooks/useGetTodo"
 
-const Home: FC = () => {
+const Home: FC = memo(() => {
   const { isSignedIn, currentUser } = useContext(AuthContext)
-  const [todos, setTodos] = useState<Todo[]>([])
-
-  const handleGetTodos = async () => {
-    try {
-      const res = await getTodos()
-      console.log(res)
-
-        setTodos(res.data.todos)
-        console.log(res.data.message)
-    } catch (err) {
-      console.log(err)
-    }
-  }
+  const { handleGetTodos, isError, todos, setTodos } = useGetTodo()
 
   useEffect(() => {
     handleGetTodos()
-  }, [])
+  }, [ handleGetTodos ])
 
   if (!isSignedIn || !currentUser) {
     return <h1>ログインできてないよー</h1>
@@ -36,8 +22,12 @@ const Home: FC = () => {
       <h1>こんにちは、 {currentUser?.name}さん！</h1>
       <TodoForm todos={todos} setTodos={setTodos} />
       <TodoList todos={todos} setTodos={setTodos} />
+
+      {
+        isError && <div style={{color: 'red'}}>Todoの取得に失敗しました</div>
+      }
     </>
   )
-}
+})
 
 export default Home
