@@ -1,30 +1,27 @@
-import { FC } from "react"
-import { deleteTodo } from "lib/api/todos"
+import { FC, memo } from "react"
 import { Todo } from "interfaces/index"
+import { useDeleteTodo } from "components/pages/todo/hooks/useDeleteTodo"
 
-interface TodoItemProps {
+type DeleteTodoValueType = {
   todo: Todo
   setTodos: Function
 }
 
-export const TodoItem: FC<TodoItemProps> = ({ todo, setTodos }) => {
-  const handleDeleteTodo = async (id: number) => {
-    try {
-          const res = await deleteTodo(id)
-          console.log(res)
-
-          setTodos((prev: Todo[]) => prev.filter((todo: Todo) => todo.id !== id))
-    } catch (err) {
-          console.log(err)
-    }
-  }
+export const TodoItem: FC<DeleteTodoValueType> = memo(({ todo, setTodos }) => {
+  const { handleDeleteTodo, isError } = useDeleteTodo({ setTodos })
 
   return (
-    <tr>
-      <td>{todo.todo}</td>
-      <td>
-        <button onClick={() => handleDeleteTodo(todo.id || 0)}>削除</button>
-      </td>
-    </tr>
+    <>
+      <tr>
+        <td>{todo.todo}</td>
+        <td>
+          <button onClick={() => handleDeleteTodo(todo.id || 0)}>削除</button>
+        </td>
+      </tr>
+
+      {
+        isError && <div style={{color: 'red'}}>Todoの削除に失敗しました</div>
+      }
+    </>
   )
-}
+})
