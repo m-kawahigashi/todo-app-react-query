@@ -9,32 +9,34 @@ class Api::V1::TodosController < ApplicationController
     def create
         @todo = Todo.new(todo_params)
 
-        if @todo.save
-            render json: { status: 200, todo: @todo }
-        else
+        begin
+            @todo.save!
+        rescue
             render json: { status: 500, message: "Todoの作成に失敗しました" }
         end
+        render json: { status: 200, todo: @todo }
     end
 
     def edit
     end
 
     def update
-        if @current_todo.update(todo_params)
-            render json: { status: 200, todo: @current_todo }
-        else
+        begin
+            @current_todo.update!(todo_params)
+        rescue
             render json: { status: 500, message: "Todoの更新に失敗しました" }
         end
+        render json: { status: 200, todo: @current_todo }
     end
 
     def destroy
         # if @current_todo.id == current_api_v1_user
-        if @current_todo.destroy
-            # @todo.destroy
-            render json: { status: 200, todo: @current_todo }
-        else
+        begin
+            @current_todo.destroy!
+        rescue
             render json: { status: 500, message: "Todoの削除に失敗しました" }
         end
+        render json: { status: 200, todo: @current_todo }
     end
 
     private
