@@ -4,8 +4,7 @@ import { Todo } from "interfaces/index"
 import { useSelector } from "react-redux"
 import { RootState } from "redux/store/store"
 import { useDispatch } from "react-redux"
-import { todoActionTypes } from "redux/actions/ActionTypes"
-import { getTodo } from "redux/actions/TodoActions"
+import { getTodoAction } from "redux/actions/TodoActions"
 
 export const useGetTodo = () => {
     const [ todos, setTodos ] = useState<Todo[]>([])
@@ -20,12 +19,11 @@ export const useGetTodo = () => {
                 console.log(res)
 
                 setTodos(res.data.todos)
-                // dispatch({ type: getTodo(res.data.todos) }) // 無限ループ発生
-                // dispatch(getTodo(res.data.todos))　// 無限ループ発生
+                dispatch(getTodoAction(res.data.todos))
 
-                console.log(res.data.message)
-                // console.log(res.data.todos)
+                // console.log(res.data.message)
                 // console.log(selector)
+
             } catch (err) {
                 setIsError(true)
                 console.log(err)
@@ -33,4 +31,6 @@ export const useGetTodo = () => {
     }, [])
 
     return { handleGetTodos, isError, todos, setTodos } // setTodosを渡すのは良くないが一旦このまま進める
+    // return { handleGetTodos, isError }
+
 }
