@@ -1,9 +1,6 @@
 import { Action } from "redux";
 import { todoActionTypes } from "../../actions/ActionTypes";
 
-// export type Todo = {
-//     todo : string
-// }
 
 export interface Todo {
     id: number;
@@ -20,17 +17,11 @@ export interface StoreState {
 interface getTodoAction extends Action {
     type: typeof todoActionTypes.getTodo;
     payload: Todo[]
-    // todo: string;
-    // userId: number;
-    // isCompleted: boolean;
 }
 
 interface addTodoAction extends Action {
     type: typeof todoActionTypes.addTodo;
     payload: Todo[]
-    // todo: string;
-    // userId: number;
-    // isCompleted: boolean;
 }
 
 // interface updateTodoAction extends Action {
@@ -41,7 +32,6 @@ interface addTodoAction extends Action {
 
 interface deleteTodoAction extends Action {
     type: typeof todoActionTypes.deleteTodo;
-    // id: number;
     payload: number
 }
 

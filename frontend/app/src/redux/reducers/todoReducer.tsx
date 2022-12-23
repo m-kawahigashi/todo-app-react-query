@@ -11,31 +11,16 @@ export const todoReducer = ( state: StoreState = todoInitialState, action: Actio
           ...state.todos,
           ...action.payload
         ]
-        // ...state,
-        // ...action.payload
       }
     }
     case todoActionTypes.addTodo: {
-      // return [...state, { todo: action.todo, completeflag: false, userId: action.userId }];
       return {
         todos: [
           ...state.todos,
           ...action.payload
         ]
       }
-
-      // return [...state, ...action.todos];
     }
-    // case 'ENDTASK': {
-    //   return {
-    //     todo: action.value,
-    //   }
-    // }
-    // case 'UPDTASK': {
-    //   return {
-    //     todo: action.value,
-    //   }
-    // }
     case todoActionTypes.deleteTodo: {
       return {
         todos: state.todos.filter( (todo: Todo) => todo.id !== action.payload )
