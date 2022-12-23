@@ -1,10 +1,8 @@
 import { FC, memo } from "react"
-
-import { Todos } from "interfaces/index"
 import { useCreateTodo } from "../hooks/useCreateTodo"
 
-export const TodoForm: FC<Todos> = memo(({ todos, setTodos }) => {
-  const { handleCreateTodo, onChangeCreateTodo, todo, isError } = useCreateTodo({ todos, setTodos })
+export const TodoForm: FC = memo(() => {
+  const { handleCreateTodo, onChangeCreateTodo, todo, isError } = useCreateTodo()
 
   return (
     <>

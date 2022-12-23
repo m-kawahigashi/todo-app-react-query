@@ -9,8 +9,7 @@ import { RootState } from "redux/store/store"
 
 const Home: FC = memo(() => {
   const { isSignedIn, currentUser } = useContext(AuthContext)
-  const { handleGetTodos, isError, todos, setTodos } = useGetTodo()
-  // const { handleGetTodos, isError } = useGetTodo()
+  const { handleGetTodos, isError } = useGetTodo()
 
 
   const selector = useSelector( (state: RootState) => state.todos )
@@ -20,7 +19,9 @@ const Home: FC = memo(() => {
     // 第二引数削除（一回だけレンダリングすればいいので(関数再生成で中身は一緒だがアドレス値が変わるため、無限ループが発生する)）
   }, [])
 
+  console.log("Home.tsx console start")
   console.log(selector)
+  console.log("Home.tsx console end")
 
   if (!isSignedIn || !currentUser) {
     return <h1>ログインできてないよー</h1>
@@ -29,12 +30,8 @@ const Home: FC = memo(() => {
   return (
     <>
       <h1>こんにちは、 {currentUser?.name}さん！</h1>
-      <TodoForm todos={todos} setTodos={setTodos} />
-      <TodoList todos={todos} setTodos={setTodos} />
-      {/* <p>{selector}</p> */}
-      {/* <TodoForm todos={selector} setTodos={setTodos} />
-      <TodoList todos={selector} setTodos={setTodos} /> */}
-
+      <TodoForm />
+      <TodoList />
 
       {
         isError && <div style={{color: 'red'}}>Todoの取得に失敗しました</div>

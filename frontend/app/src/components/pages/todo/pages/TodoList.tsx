@@ -1,8 +1,13 @@
 import { FC, memo }  from "react"
 import { TodoItem } from "./TodoItem"
-import { Todo, Todos } from "interfaces/index"
+import { Todo } from "interfaces/index"
 
-export const TodoList: FC<Todos> = memo(({ todos, setTodos }) => {
+import { useSelector } from "react-redux"
+import { RootState } from "redux/store/store"
+
+export const TodoList: FC = memo(() => {
+  const todos = useSelector((state: RootState) => state.todos)
+
   return (
     <table>
       <thead>
@@ -12,12 +17,11 @@ export const TodoList: FC<Todos> = memo(({ todos, setTodos }) => {
       </thead>
       <tbody>
         {
-          todos.map((todo: Todo, index: number) => {
+          todos.todos.map((todo: Todo, index: number) => {
             return (
               <TodoItem
                 key={index}
                 todo={todo}
-                setTodos={setTodos}
               />
             )
           })

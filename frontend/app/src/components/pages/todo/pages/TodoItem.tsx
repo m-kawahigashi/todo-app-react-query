@@ -4,11 +4,10 @@ import { useDeleteTodo } from "components/pages/todo/hooks/useDeleteTodo"
 
 type DeleteTodoValueType = {
   todo: Todo
-  setTodos: Function
 }
 
-export const TodoItem: FC<DeleteTodoValueType> = memo(({ todo, setTodos }) => {
-  const { handleDeleteTodo, isError } = useDeleteTodo({ setTodos })
+export const TodoItem: FC<DeleteTodoValueType> = memo(({ todo }) => {
+  const { handleDeleteTodo, isError } = useDeleteTodo()
 
   return (
     <>

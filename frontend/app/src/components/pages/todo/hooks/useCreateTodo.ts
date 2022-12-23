@@ -2,14 +2,18 @@ import { useState, useContext, useCallback } from "react"
 import { AuthContext } from "App"
 
 import { createTodo } from "lib/api/todos"
-import { Todo, Todos } from "interfaces/index"
+import { Todo } from "interfaces/index"
+import { useDispatch } from "react-redux"
+import { addTodoAction } from "redux/actions/TodoActions"
 
-export const useCreateTodo = ( todoFormValue: Todos ) => {
+export const useCreateTodo = () => {
+
     const { currentUser } = useContext(AuthContext)
-    const { todos, setTodos } = todoFormValue
     const [ todo, setTodo ] = useState<string>("")
     const [ isError, setIsError ] = useState<boolean>(false)
     const currentUserId: number | undefined = currentUser?.id
+
+    const dispatch = useDispatch()
 
     const onChangeCreateTodo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setTodo(e.target.value)
@@ -32,7 +36,8 @@ export const useCreateTodo = ( todoFormValue: Todos ) => {
               const res = await createTodo(data)
               console.log(res)
 
-              setTodos([...todos, res.data.todo])
+              dispatch( addTodoAction([res.data.todo]) )
+
               console.log(currentUserId)
         } catch (err) {
               setIsError(true)
@@ -40,7 +45,8 @@ export const useCreateTodo = ( todoFormValue: Todos ) => {
         }
 
         setTodo("")
-    }, [ currentUserId, todo, todos, setTodos ])
+    }, [ currentUserId, todo ])
+
 
     return { handleCreateTodo, onChangeCreateTodo, todo, isError }
 }
