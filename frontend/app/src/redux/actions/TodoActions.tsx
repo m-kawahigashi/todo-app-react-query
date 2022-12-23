@@ -3,7 +3,7 @@ import { ActionTypes, Todos } from "redux/types/todo/types";
 
 
 // todo取得
-export const getTodo = (todos: Todos) : ActionTypes => {
+export const getTodoAction = (todos: Todos) : ActionTypes => {
     return {
         type: todoActionTypes.getTodo,
         payload: todos
@@ -11,7 +11,7 @@ export const getTodo = (todos: Todos) : ActionTypes => {
 }
 
 // todo登録
-export const addTodo = (addTodo: Todos) : ActionTypes => {
+export const addTodoAction = (addTodo: Todos) : ActionTypes => {
     return {
         type: todoActionTypes.addTodo,
         payload: addTodo
@@ -28,7 +28,7 @@ export const addTodo = (addTodo: Todos) : ActionTypes => {
 // }
 
 // todo削除
-export const deleteTodo = (deleteTodoId: number) : ActionTypes => {
+export const deleteTodoAction = (deleteTodoId: number) : ActionTypes => {
     return {
         type: todoActionTypes.deleteTodo,
         payload: deleteTodoId

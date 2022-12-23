@@ -1,3 +1,5 @@
-import { Todo } from "redux/types/todo/types"
+import { StoreState } from "redux/types/todo/types"
 
-export const todoInitialState: Todo[] = []
+export const todoInitialState: StoreState = {
+    todos: []
+}

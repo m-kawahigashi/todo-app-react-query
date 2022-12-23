@@ -1,21 +1,25 @@
 import { todoActionTypes } from "redux/actions/ActionTypes"
-import { ActionTypes } from "redux/types/todo/types"
+import { ActionTypes, Todo, StoreState } from "redux/types/todo/types"
 import { todoInitialState } from "redux/store/initialState"
 
-export const todoReducer = ( state = todoInitialState, action: ActionTypes ) => {
+
+export const todoReducer = ( state: StoreState = todoInitialState, action: ActionTypes ): StoreState => {
   switch (action.type) {
     case todoActionTypes.getTodo: {
-      // return [...state, { todo: action.todo, completeflag: false, userId: action.userId }];
       return {
+        todos: [
+          ...state.todos,
+          ...action.payload
+        ]
         // ...state,
-        ...action.payload
+        // ...action.payload
       }
     }
     case todoActionTypes.addTodo: {
       // return [...state, { todo: action.todo, completeflag: false, userId: action.userId }];
       return {
         todos: [
-          ...state,
+          ...state.todos,
           ...action.payload
         ]
       }
@@ -34,7 +38,7 @@ export const todoReducer = ( state = todoInitialState, action: ActionTypes ) => 
     // }
     case todoActionTypes.deleteTodo: {
       return {
-       todos: state.filter( (todo) => todo.id !== action.payload )
+        todos: state.todos.filter( (todo: Todo) => todo.id !== action.payload )
       }
     }
     default: {
