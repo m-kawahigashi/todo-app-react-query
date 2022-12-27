@@ -27,7 +27,7 @@ jobs:
 
       - run:
           command: |
-            gem install bundler
+            gem install bundler -v 2.3.26
             bundle config set path 'vendor/bundle'
             bundle install --jobs=4 --retry=3
           working_directory: ~/todo-app/backend
