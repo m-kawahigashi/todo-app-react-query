@@ -1,10 +1,9 @@
 import { useState, useContext, useCallback } from "react"
 import { AuthContext } from "App"
 
-import { createTodo } from "lib/api/todos"
 import { Todo } from "interfaces/index"
 import { useDispatch } from "react-redux"
-import { addTodoAction } from "redux/actions/TodoActions"
+import { AddTodoOperation } from "redux/operations/todoOperations"
 
 export const useCreateTodo = () => {
 
@@ -33,11 +32,7 @@ export const useCreateTodo = () => {
         }
 
         try {
-              const res = await createTodo(data)
-              console.log(res)
-
-              dispatch( addTodoAction([res.data.todo]) )
-
+              dispatch(AddTodoOperation(data))
               console.log(currentUserId)
         } catch (err) {
               setIsError(true)

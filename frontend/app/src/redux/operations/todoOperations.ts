@@ -1,74 +1,36 @@
-import { useState } from "react"
-import { getTodos } from "lib/api/todos"
-import { useDispatch } from "react-redux"
-import { getTodoAction } from "redux/actions/TodoActions"
-import { ThunkAction } from "redux-thunk";
-import { todoActionTypes } from "redux/actions/ActionTypes";
-import { RootState } from "redux/store/store"
-import { Dispatch, Action } from "redux";
-import { GetTodoAction, ActionTypes } from "redux/types/todo/types";
-import { ThunkDispatch, ThunkActionDispatch } from "redux-thunk";
+import { getTodos, createTodo, deleteTodo } from "lib/api/todos"
+import { getTodoAction, addTodoAction, deleteTodoAction } from "redux/actions/TodoActions"
 
-export const GetTodoOperation = () => {
-    return async (dispatch: ThunkDispatch<RootState, unknown, ActionTypes>)=> {
-    // return async () => {
-        // const dispatch = useDispatch()
+import { Todo } from "interfaces/index"
+import { RootState } from "redux/store/store"
+import { Dispatch, ActionCreator } from "redux";
+import { ActionTypes } from "redux/types/todo/types";
+import { ThunkAction } from "redux-thunk";
+
+export const GetTodoOperation: ActionCreator<ThunkAction<void, RootState, undefined, ActionTypes>> = () => { //ActionTypesは基本的にはどのアクションを呼び出した方がいいか明示的に指定する方が良い
+    return async (dispatch: Dispatch) => {
 
         const res = await getTodos()
         console.log(res)
 
-       return dispatch(getTodoAction(res.data.todos))
-        // const todos = res.data.todos
-        // console.log(state)
+        dispatch(getTodoAction(res.data.todos))
     }
 }
 
-// type IsErroeType = {
-//     setIsError: Function
-// }
+export const AddTodoOperation: ActionCreator<ThunkAction<void, RootState, undefined, ActionTypes>> = (data: Todo) => {
+    return async (dispatch: Dispatch) => {
+        const res = await createTodo(data)
+        console.log(res)
 
-// export const GetTodoOperation = ({setIsError}: IsErroeType) => {
-//     // const [ isError, setIsError ] = useState<boolean>(false)
+        dispatch(addTodoAction([res.data.todo]))
+    }
+}
 
-//     return async (dispatch: Dispatch<ActionTypes>) => {
-//         try {
-//             const res = await getTodos()
-//             console.log(res)
+export const DeleteTodoOperation: ActionCreator<ThunkAction<void, RootState, undefined, ActionTypes>> = (id: number) => {
+    return async (dispatch: Dispatch) => {
+        const res = await deleteTodo(id)
+        console.log(res)
 
-//             dispatch(getTodoAction(res.data.todos))
-
-//             // GetTodoOperation() //⇦ではOperationが読み込まれていない？？（stateの中身が０件　※非同期処理が走ってない）
-//             // dispatch(GetTodoOperation()) //⇦では引数のGetTodoOperation()でエラー発生　※型が合ってない？？
-
-//         } catch (err) {
-//             setIsError(true)
-//             console.log(err)
-//         }
-
-//         // const dispatch = useDispatch()
-
-//         const res = await getTodos()
-//         // console.log(res)
-
-//         dispatch(getTodoAction(res.data.todos))
-//         // const todos = res.data.todos
-//         // console.log(state)
-//     }
-// }
-
-// export const GetTodoOperation = (): ThunkAction<
-// void,
-// RootState,
-// undefined,
-// ActionTypes
-// > => async (dispatch: Dispatch<Action>) => {
-
-//         // const dispatch = useDispatch()
-
-//         const res = await getTodos()
-//         // console.log(res)
-
-//         dispatch(getTodoAction(res.data.todos))
-//         // const todos = res.data.todos
-//         // console.log(state)
-// }
+        dispatch( deleteTodoAction(id))
+    }
+}
