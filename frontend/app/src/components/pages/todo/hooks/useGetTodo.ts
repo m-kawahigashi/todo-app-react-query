@@ -1,23 +1,20 @@
-import { useCallback, useState } from "react"
-import { useDispatch } from "react-redux"
-import { GetTodoOperation } from "redux/operations/todoOperations"
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import { getTodoApi } from "../todoApi";
 
 export const useGetTodo = () => {
-    const [ isError, setIsError ] = useState<boolean>(false)
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ['todos'],
+        queryFn: getTodoApi,
+        onError: (err: AxiosError) => {
+            console.log(err);
+        },
+        staleTime: Infinity,
+    });
 
-    const dispatch = useDispatch()
-
-    const handleGetTodos = useCallback(async () => {
-        try {
-                // dispatch(GetTodoOperation() as unknown as any) //⇦引数のGetTodoOperation()でエラー発生　※型が合ってない？？型合ってなかったので一旦anyで
-                dispatch(GetTodoOperation())
-
-            } catch (err) {
-                setIsError(true)
-                console.log(err)
-            }
-    }, [])
-
-    return { handleGetTodos, isError }
-
+    return {
+        todos: data,
+        isLoading,
+        isError
+    };
 }

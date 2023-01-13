@@ -1,22 +1,14 @@
-import { useCallback, useState } from "react"
-
-import { useDispatch } from "react-redux"
-import { DeleteTodoOperation } from "redux/operations/todoOperations"
+import { useCallback } from "react"
+import { DeleteMutateTodo } from "./useMutateTodo"
 
 export const useDeleteTodo = () => {
 
-    const [ isError, setIsError ] = useState<boolean>(false)
-    const dispatch = useDispatch()
+    const { deleteMutate } = DeleteMutateTodo();
+    const isError = deleteMutate.isError;
 
     const handleDeleteTodo = useCallback( async(id: number) => {
-        try {
-                dispatch(DeleteTodoOperation(id))
-            } catch (err) {
-                setIsError(true)
-                console.log(err)
-            }
+        deleteMutate.mutate(id);
        }, [])
-
 
     return { handleDeleteTodo, isError }
 }

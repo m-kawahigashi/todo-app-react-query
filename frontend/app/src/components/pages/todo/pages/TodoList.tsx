@@ -1,12 +1,14 @@
 import { FC, memo }  from "react"
 import { TodoItem } from "./TodoItem"
 import { Todo } from "interfaces/index"
-
-import { useSelector } from "react-redux"
-import { RootState } from "redux/store/store"
+import { useGetTodo } from "../hooks/useGetTodo"
 
 export const TodoList: FC = memo(() => {
-  const todos = useSelector((state: RootState) => state.todos)
+  const { todos, isLoading } = useGetTodo();
+
+  if (isLoading) {
+    return <>loading</>;
+  }
 
   return (
     <table>
@@ -17,7 +19,7 @@ export const TodoList: FC = memo(() => {
       </thead>
       <tbody>
         {
-          todos.todos.map((todo: Todo, index: number) => {
+          todos?.map((todo: Todo, index: number) => {
             return (
               <TodoItem
                 key={index}

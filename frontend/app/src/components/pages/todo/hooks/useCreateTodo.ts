@@ -2,17 +2,15 @@ import { useState, useContext, useCallback } from "react"
 import { AuthContext } from "App"
 
 import { Todo } from "interfaces/index"
-import { useDispatch } from "react-redux"
-import { AddTodoOperation } from "redux/operations/todoOperations"
+import { AddMutateTodo } from "./useMutateTodo"
 
 export const useCreateTodo = () => {
 
     const { currentUser } = useContext(AuthContext)
     const [ todo, setTodo ] = useState<string>("")
-    const [ isError, setIsError ] = useState<boolean>(false)
     const currentUserId: number | undefined = currentUser?.id
-
-    const dispatch = useDispatch()
+    const { addMutate } = AddMutateTodo();
+    const isError = addMutate.isError;
 
     const onChangeCreateTodo = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
         setTodo(e.target.value)
@@ -31,13 +29,7 @@ export const useCreateTodo = () => {
           userId: currentUserId
         }
 
-        try {
-              dispatch(AddTodoOperation(data))
-              console.log(currentUserId)
-        } catch (err) {
-              setIsError(true)
-              console.log(err)
-        }
+        addMutate.mutate(data);
 
         setTodo("")
     }, [ currentUserId, todo ])
