@@ -13,7 +13,7 @@ export const GetTodoOperation: ActionCreator<ThunkAction<void, RootState, undefi
         const res = await getTodos()
         console.log(res)
 
-        dispatch(getTodoAction(res.data.todos))
+        // dispatch(getTodoAction(res.data.todos))
     }
 }
 
@@ -22,7 +22,7 @@ export const AddTodoOperation: ActionCreator<ThunkAction<void, RootState, undefi
         const res = await createTodo(data)
         console.log(res)
 
-        dispatch(addTodoAction([res.data.todo]))
+        // dispatch(addTodoAction([res.data.todo]))
     }
 }
 
@@ -31,6 +31,6 @@ export const DeleteTodoOperation: ActionCreator<ThunkAction<void, RootState, und
         const res = await deleteTodo(id)
         console.log(res)
 
-        dispatch( deleteTodoAction(id))
+        // dispatch( deleteTodoAction(id))
     }
 }
